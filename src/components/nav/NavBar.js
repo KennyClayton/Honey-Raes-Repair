@@ -12,9 +12,9 @@ export const NavBar = () => {
             {
                 localStorage.getItem("honey_user")
                     ? <li className="navbar__item navbar__logout">
-                        <Link className="navbar__link" to="" onClick={() => {
-                            localStorage.removeItem("honey_user")
-                            navigate("/", {replace: true})
+                        <Link className="navbar__link" to="" onClick={() => { //on a user's click of the logout button...
+                            localStorage.removeItem("honey_user") //...the user's local storage removes the honey_user object
+                            navigate("/", {replace: true}) //...and then the website goes back to the base route of the website/application
                         }}>Logout</Link>
                     </li>
                     : ""

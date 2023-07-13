@@ -10,7 +10,7 @@ export const Login = () => {
     const handleLogin = (e) => {
         e.preventDefault()
 
-        return fetch(`http://localhost:8088/users?email=${email}`)
+        return fetch(`http://localhost:8088/users?email=${email}`) // makes a fetch call for matching the entered email address for any on the server
             .then(res => res.json())
             .then(foundUsers => {
                 if (foundUsers.length === 1) {
