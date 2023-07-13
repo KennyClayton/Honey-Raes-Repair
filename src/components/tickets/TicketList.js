@@ -55,31 +55,41 @@ export const TicketList = () => {
         },
         [tickets] //...this is an observing array. We are watching the tickets array for any kind of change
     )
+    //...now watch for the state of data to change. What data? Defined below, we ask for it to watch the openOnly value to change from an open ticket to a completed ticket. //? or are we watching the openTicketArray?
+    //^ ASK INSTRUCTORS IF THE BELOW NOTES I TOOK MAKES SENSE
+    useEffect(() => { // We are going to watch the state of some data with the useEffect hook...
+        if (openOnly) {
+        const openTicketArray = tickets.filter(ticket => { //...we'll catch the return of the function below in openTicketArray. We'll use a filter method on the tickets array... and for each ticket...
+            return ticket.userId === honeyUserObject.id && ticket.dateCompleted === "" //...we want to compare each ticket's userId and return all ticket objects that are equal to two conditions: if the ticket's userId is the same as the honey user's id, AND that ticket's dateCompleted is equal to an empty string (ir it is not completed yet)...then return those ticket objects to the openTicketArray variable.....and then...
+        })
+        setFiltered(openTicketArray) //...run the setFiltered function on those matching ticket objects which will set them as the new State //? in permanent state?
+        }
+        else {
+            const myTickets = tickets.filter(ticket => ticket.userId === honeyUserObject.id)
+            setFiltered(myTickets)
+        }
+    }    ,
+        [openOnly] //? is this what we are watching with our useEffect hook?
 
-        useEffect(
-            () => {
-                const openTicketArray = tickets.filter(ticket => {
-                    return ticket.userId === honeyUserObject.id && ticket.dateCompleted !== ""
-                })
-            },
-            [ openOnly ]
-        )
+    ) //* for future reference, the !== code means must not equal. And after that is added empty quotes like this "", which means an empty string. So that would have meant if 
+
 
     return <>
         {
             honeyUserObject.staff // ternary statement....if the user is on staff....if that is TRUE...then show this button...
-            // remember that you have to use fragments to encase your buttons bc react will only allow one ... something
+                // remember that you have to use fragments to encase your buttons bc react will only allow one ... something
                 ? <>
                     <button onClick={() => { setEmergency(true) }}>Emergency Only</button>
                     <button onClick={() => { setEmergency(false) }}>Show All</button>
                 </>
-                // : "" //...but if it's false, the colon means "if that's false" then "", which means place an empty string (ie - do not show the button)
+                // : "" //...but if it's false, the colon means "if that's false, then...", followed by empty string quotes "" which means place an empty string (ie - do not show the button)
                 // below buttons:
-                    // on click of user's mouse on the Create Ticket button, navigate to the creat web page (or, technically, the create component?
-                    // on click of user's mouse on the Show Open Tickets button, update the list of tickets to ONLY show tickets that are still open ( ie - uncompleted tickets))
+                // on click of user's mouse on the Create Ticket button, navigate to the creat web page //? (or, technically, the create component?
+                // on click of user's mouse on the Show Open Tickets button, update the list of tickets to ONLY show tickets that are still open ( ie - uncompleted tickets))
                 : <>
                     <button onClick={() => navigate("/ticket/create")}>Create Ticket</button>
-                    <button onClick={() => updateOpenOnly(true)}>Show Open Tickets</button> 
+                    <button onClick={() => updateOpenOnly(true)}>Show Open Tickets</button>
+                    <button onClick={() => updateOpenOnly(false)}>All My Tickets</button>
                 </>
         }
 
